@@ -1,5 +1,6 @@
 package xmasLights
 
+import org.scalatest
 import org.scalatest.{BeforeAndAfterEach, FlatSpec}
 
 class XmasLightsSpec extends FlatSpec with BeforeAndAfterEach {
@@ -15,8 +16,7 @@ class XmasLightsSpec extends FlatSpec with BeforeAndAfterEach {
   }
 
   "a XmasLights" should "return all the lights OFF by default" in {
-    val numLightsOn = xmas.countLights(lightOn)
-    assert(numLightsOn == 0)
+    boardIsOff
   }
 
   "a XmasLights" should "allow to turn on one light" in {
@@ -30,19 +30,18 @@ class XmasLightsSpec extends FlatSpec with BeforeAndAfterEach {
     xmas.changeLightStatus(lightOn, coords)
     assert(xmas.countLights(lightOn) == 1)
     xmas.changeLightStatus(lightOff, coords)
-    assert(xmas.countLights(lightOn) == 0)
+    boardIsOff
   }
 
   "a XmasLights" should "allow to toggle one light" in {
-    assert(xmas.countLights(lightOff) == boardNumLights)
-    assert(xmas.countLights(lightOn) == 0)
+    boardIsOff
     val coords = Coordinates(0, 0)
     xmas.toggleLight(coords)
     assert(xmas.countLights(lightOn) == 1)
   }
 
   "a XmasLights" should "allow to turn on a range of lights" in {
-    assert(xmas.countLights(lightOn) == 0)
+    boardIsOff
     val coords1 = Coordinates(0, 0)
     val coords2 = Coordinates(2, 2)
     xmas.changeLightsStatus(lightOn, coords1, coords2)
@@ -50,20 +49,17 @@ class XmasLightsSpec extends FlatSpec with BeforeAndAfterEach {
   }
 
   "a XmasLights" should "allow to turn off a range of lights" in {
-    assert(xmas.countLights(lightOn) == 0)
-    assert(xmas.countLights(lightOff) == boardNumLights)
+    boardIsOff
     val coords1 = Coordinates(0, 0)
     val coords2 = Coordinates(2, 2)
     xmas.changeLightsStatus(lightOn, coords1, coords2)
     assert(xmas.countLights(lightOn) == 9)
     xmas.changeLightsStatus(lightOff, coords1, coords2)
-    assert(xmas.countLights(lightOn) == 0)
-    assert(xmas.countLights(lightOff) == boardNumLights)
+    boardIsOff
   }
 
   "a XmasLights" should "allow to toggle a range of lights" in {
-    assert(xmas.countLights(lightOn) == 0)
-    assert(xmas.countLights(lightOff) == boardNumLights)
+    boardIsOff
     val coords1 = Coordinates(0, 0)
     val coords2 = Coordinates(2, 2)
     xmas.toggleLights(coords1, coords2)
@@ -85,5 +81,10 @@ class XmasLightsSpec extends FlatSpec with BeforeAndAfterEach {
     )
 //    myXmas.printLights()
     println(myXmas.countLights(lightOn))
+  }
+
+  private def boardIsOff: scalatest.Assertion = {
+    assert(xmas.countLights(lightOff) == boardNumLights)
+    assert(xmas.countLights(lightOn) == 0)
   }
 }
