@@ -1,23 +1,23 @@
 package xmasLights
 
 class XmasLights(sizeX: Int = 1000, sizeY: Int = 1000) {
-  val lightsStatus = Array.fill[Light](sizeX, sizeY)(Light(LightStatus()))
+  val lightsStatus = Array.fill[LightStatus](sizeX, sizeY)(LightStatus())
 
   def printLights(): Unit = {
     lightsStatus.foreach(x => {
-      x.foreach(y => y.status.printMe())
+      x.foreach(y => y.printMe())
       println()
     })
   }
 
   def countLights(status: LightStatus): Int = {
     lightsStatus
-      .map(x => x.count(y => y.status.sameStatus(status)))
+      .map(x => x.count(y => y.sameStatus(status)))
       .sum
   }
 
   def changeLightStatus(status: LightStatus, coords: Coordinates): Unit = {
-    lightsStatus(coords.x)(coords.y) = Light(status)
+    lightsStatus(coords.x)(coords.y) = status
   }
 
   def changeLightsStatus(status: LightStatus,
@@ -31,7 +31,7 @@ class XmasLights(sizeX: Int = 1000, sizeY: Int = 1000) {
   }
 
   def toggleLight(coords: Coordinates): Unit = {
-    val newStatus = lightsStatus(coords.x)(coords.y).status.toggle()
+    val newStatus = lightsStatus(coords.x)(coords.y).toggle()
     changeLightStatus(newStatus, coords)
   }
 
